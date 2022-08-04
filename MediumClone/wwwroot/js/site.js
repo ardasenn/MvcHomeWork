@@ -20,10 +20,8 @@
 function CloseAddCategoryToUser() {
     $("#CategoryList").html("");
 }
-//CategoryButton
-function CloseCategoryButton() {
-    $("#CategoryButton").hide();
-}
+
+
 function GetAddCategoryToUser() {
     $.ajax({
         url: "/Home/AddCategoryToUser",
@@ -44,8 +42,7 @@ function AddCategoryToUser() {
         dataType: "Json",
         success: function (response) {
             if (response == "Ok") {
-                CloseAddCategoryToUser();
-                CloseCategoryButton()
+                CloseAddCategoryToUser();                
             }
         }
     })

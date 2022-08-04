@@ -3,6 +3,12 @@
 }
 
 @model ArticlesForMainPageVM
+<a id="CategoryButton" class="btn btn-outline-info" onclick="GetAddCategoryToUser()"> Kategori Ekle</a>
+<div id="CategoryList">
+
+  </div>
+  <a class="btn btn-primary" asp-action="AddArticle"> Makale Ekle </a>
+
 @if (Model.InterestedArticles!=null && Model.InterestedArticles.Count()>0) @*neden null gelmiyor burası sorulacak*@
 {
 <div id="InteredtedArticles">
@@ -27,15 +33,11 @@
 </div>
     <hr />
 }
-else
-{  
- <a id="CategoryButton" class="btn btn-outline-info" onclick="GetAddCategoryToUser()"> Kategori Ekle</a>
-  <div id="CategoryList">
-
-  </div>
+  
+  
     
 
-}
+
 <div id="InteredtedArticles">
  <main class="container-fluid p-4">
     <h2 class="mt-5 mt-3">En çok Okunan Top 10 Makaleler</h2>

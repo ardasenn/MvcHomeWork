@@ -198,3 +198,4 @@ D:\ARDA D\Arda\YAZILIM\MediumClone\MediumClone\MediumClone\obj\Debug\net5.0\refi
 D:\ARDA D\Arda\YAZILIM\MediumClone\MediumClone\MediumClone\obj\Debug\net5.0\MediumClone.pdb
 D:\ARDA D\Arda\YAZILIM\MediumClone\MediumClone\MediumClone\obj\Debug\net5.0\MediumClone.genruntimeconfig.cache
 D:\ARDA D\Arda\YAZILIM\MediumClone\MediumClone\MediumClone\obj\Debug\net5.0\ref\MediumClone.dll
+D:\ARDA D\Arda\YAZILIM\MediumClone\MediumClone\MediumClone\obj\Debug\net5.0\Razor\Views\Home\AddArticle.cshtml.g.cs

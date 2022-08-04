@@ -66,7 +66,7 @@ namespace MediumClone.Controllers
         public async Task<IActionResult> AddCategoryToUser(ArticlesForMainPageVM articlesForMainPageVM,string id)
         {
             AppUser user = await userManager.FindByIdAsync(HttpContext.Session.GetString("userID"));
-            Category category = categoryRepository.GetById(articlesForMainPageVM.CategoryID);
+            Category category = categoryRepository.GetById(articlesForMainPageVM.CategoryID);            
             user.Categories.Add(category);
             IdentityResult result =await userManager.UpdateAsync(user);
             if (result.Succeeded)
@@ -79,7 +79,37 @@ namespace MediumClone.Controllers
                  return Json("Fail");
             }
         }
+        public IActionResult AddArticle()
+        {
+            NewArticleVM newArticleVM = new NewArticleVM();
+            newArticleVM.Categories=categoryRepository.GetAll();            
+            return View(newArticleVM);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddArticle(NewArticleVM newArticleVM)
+        {
+            if (ModelState.IsValid)
+            {
+            bool check;
+            Article article =new Article();
+            article.Title = newArticleVM.Title;
+            article.Content=newArticleVM.Content;           
+            article.Author = await userManager.FindByIdAsync(HttpContext.Session.GetString("userID"));            
+            foreach (int item in newArticleVM.CategoryIds)
+            {
+                article.Categories.Add(categoryRepository.GetById(item));
+            }
+           check= articleRepository.Add(article);
+            if (check)
+            {
 
+            return RedirectToAction("UserIndex","Home",article.Author);
+            }
+            return View(newArticleVM);
+            }
+            newArticleVM.Categories = categoryRepository.GetAll();
+            return View(newArticleVM);
+        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
