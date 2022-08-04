@@ -36,12 +36,11 @@ namespace MediumClone.Controllers
                 IdentityResult result = await userManager.CreateAsync(appUser, user.Password);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");//sonradan değiştiriliecek
+                    return RedirectToAction("UserIndex", "Home");//sonradan değiştiriliecek
                 }
                 else
                 {
                     Error(result);
-
                 }
             }
             return View(user);

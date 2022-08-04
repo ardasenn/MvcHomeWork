@@ -1,0 +1,17 @@
+﻿ @model ArticlesForMainPageVM
+
+
+<h1 class=" bg-info text-white"> Lütfen Kategori Ekleyiniz</h1>
+<div asp-validation-summary="All"></div> 
+  <div class="form-group">
+   <label  class="contol-label">Hoşuna giden alanlar ?</label>         
+  </div>                       
+  <select  id="CategoryID" class="form-control">
+    @foreach (var item in Model.Categories)
+     {
+         <option value="@item.Id">@item.Name</option>
+      }
+   </select>
+   <br />
+  <input  value="Kategori Ekle" onclick="AddCategoryToUser()" class="btn btn-primary" />                       
+

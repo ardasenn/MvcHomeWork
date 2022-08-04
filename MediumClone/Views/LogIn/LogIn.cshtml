@@ -1,0 +1,46 @@
+﻿@model LoginVM
+
+@{
+    ViewData["Title"] = "LogIn";
+}
+@if(User?.Identity?.IsAuthenticated ?? false)
+{
+<a asp-controller="LogIn" asp-action="LogOut" class="btn btn-danger">Log Out</a>
+}
+else
+{
+    
+<h1>Login Screen</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Login" asp-controller="LogIn">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email"class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                
+            </div>           
+             <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-primary" />
+             </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-controller="Home">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+}

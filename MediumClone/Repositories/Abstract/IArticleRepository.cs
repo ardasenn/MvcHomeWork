@@ -8,5 +8,8 @@ namespace MediumClone.Repositories.Abstract
     public interface IArticleRepository: IRepository<Article>
     {
         IEnumerable<Article> GetAllIncludeAuthors();
+        IEnumerable<Article> GetTrendingArticles(int count);
+        IEnumerable<Article> GetAllArtricleByInterestedIn(List<int> list);
+        IEnumerable<Article> GetTop10Articles();
     }
 }

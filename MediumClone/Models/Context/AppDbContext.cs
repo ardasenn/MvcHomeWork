@@ -12,11 +12,11 @@ namespace MediumClone.Models.Context
 
         }
         public DbSet<Article> Articles { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Category> Categories { get; set; }        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Article>().HasMany(a => a.Categories).WithMany(b => b.Articles);
-            builder.Entity<AppUser>().HasMany(a=>a.Categories).WithMany(b=>b.AppUsers);
+            builder.Entity<AppUser>().HasMany(a=>a.Categories).WithMany(b=>b.AppUsers);            
             base.OnModelCreating(builder);
         }
     }

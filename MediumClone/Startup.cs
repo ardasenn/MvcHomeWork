@@ -4,6 +4,7 @@ using MediumClone.Repositories.Abstract;
 using MediumClone.Repositories.Concrete;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +35,14 @@ namespace MediumClone
             services.AddIdentity<AppUser,IdentityRole>().AddEntityFrameworkStores<AppDbContext>();//identity role þuan standart olarak ayaða kalkacak.Eðer deðiþtirmek istiyorsam kalýtým verdiðim sýnýfý yazmam gerekiyor.
             services.AddTransient(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IArticleRepository, ArticleRepository>();
-            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();     services.AddSession();      
+            services.ConfigureApplicationCookie(option =>
+            {
+                option.Cookie.Name = "CloneMediumUser";//cookie adý bu
+                option.ExpireTimeSpan = TimeSpan.FromHours(1);//1 saat iþlem olmazsa session sonlanýr
+                option.SlidingExpiration = true;//iþlem yaðtýðýnda süreyi sýfýrlar
+                option.LoginPath = "/LogIn/LogIn";
+            });
 
         }
 
@@ -51,6 +59,7 @@ namespace MediumClone
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+           
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -58,7 +67,7 @@ namespace MediumClone
 
             app.UseAuthorization();
             app.UseAuthentication();//Identity için bunu ekledik
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
