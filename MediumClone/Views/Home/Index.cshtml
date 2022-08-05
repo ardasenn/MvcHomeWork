@@ -4,40 +4,38 @@
 
 @model ArticlesForMainPageVM
 
-    <main class="container-fluid p-4">
+   
     <h2 class="mt-5 mt-3">Tüm Makaleler</h2>
     <section class="row">
         @foreach (var item in Model.Articles)
-        {
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Title</h5>
-                        <p class="card-text">@item.Content</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
+        {            
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">@item.Title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Author : @item.Author.UserName</h6>
+                <p class="card-text">@item.Content.Substring(0,4)</p>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+              </div>
             </div>
+           
         }
     </section>     
-</main>
 
-   <hr />
-
-    <main class="container-fluid p-4">
+<hr />
+    
     <h2 class="mt-5 mt-3">Trend Makaleler</h2>
     <section class="row">
         @foreach (var item in Model.TopViewedArticles)
         {
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Title</h5>
-                        <p class="card-text">@item.Content</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">@item.Title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Author : @item.Author.UserName</h6>
+                <p class="card-text">@item.Content.Substring(0,4)</p>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+              </div>
             </div>
         }
     </section>     
-</main>

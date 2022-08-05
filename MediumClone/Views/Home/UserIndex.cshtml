@@ -8,73 +8,60 @@
 
   </div>
   <a class="btn btn-primary" asp-action="AddArticle"> Makale Ekle </a>
+   <a class="btn btn-primary" asp-action="MyArticles" asp-route-id="@Model.Id"> Makalelerim </a>
 
-@if (Model.InterestedArticles!=null && Model.InterestedArticles.Count()>0) @*neden null gelmiyor burası sorulacak*@
+@if (Model.InterestedArticles!=null && Model.InterestedArticles.Count()>0)
 {
 <div id="InteredtedArticles">
  <main class="container-fluid p-4">
     <h2 class="mt-5 mt-3">Beğenebileceğiniz Makaleler</h2>
     <section class="row">
         @foreach (var item in Model.InterestedArticles)
-        {            
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Title</h5>
-                        <p class="card-text">@item.Content</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                        <br />
-                    </div>
-                </div>
-            </div>
-        }
-    </section>     
-</main>
-</div>
-    <hr />
-}
-  
-  
-    
-
-
-<div id="InteredtedArticles">
- <main class="container-fluid p-4">
-    <h2 class="mt-5 mt-3">En çok Okunan Top 10 Makaleler</h2>
-    <section class="row">
-        @foreach (var item in Model.TopViewedArticles)
-        {            
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Title</h5>
-                        <p class="card-text">@item.Content</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                        <br />
-                    </div>
-                </div>
-            </div>
+        {               
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">@item.Title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Author : @item.Author.UserName</h6>
+                <p class="card-text">@item.Content.Substring(0,5)</p>                
+              </div>
+            </div>  
         }
     </section>     
 </main>
 </div>
 <hr />
-<div id="InteredtedArticles">
+} 
+<div id="TopViewedArticles">
+ <main class="container-fluid p-4">
+    <h2 class="mt-5 mt-3">En çok Okunan Top 10 Makaleler</h2>
+    <section class="row">
+        @foreach (var item in Model.TopViewedArticles)
+        {            
+          <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">@item.Title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Author : @item.Author.UserName</h6>
+                <p class="card-text">@item.Content.Substring(0,5)</p>                
+              </div>
+            </div> 
+        }
+    </section>     
+</main>
+</div>
+<hr />
+<div id="AllArticles">
  <main class="container-fluid p-4">
     <h2 class="mt-5 mt-3">Tüm Makaleler</h2>
     <section class="row">
         @foreach (var item in Model.Articles)
         {            
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Title</h5>
-                        <p class="card-text">@item.Content</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                        <br />
-                    </div>
-                </div>
-            </div>
+           <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">@item.Title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Author : @item.Author.UserName</h6>
+                <p class="card-text">@item.Content.Substring(0,5)</p>                
+              </div>
+            </div> 
         }
     </section>     
 </main>

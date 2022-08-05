@@ -28,8 +28,7 @@ namespace MediumClone.Controllers
             { AppUser appUser = await userManager.FindByEmailAsync(login.Email);
               if(appUser != null)
                 {
-                    Microsoft.AspNetCore.Identity.SignInResult result =  await signInManager.PasswordSignInAsync(appUser, login.Password, false, false);
-                    HttpContext.Session.SetString("userID", $"{appUser.Id}");
+                    Microsoft.AspNetCore.Identity.SignInResult result =  await signInManager.PasswordSignInAsync(appUser, login.Password, false, false);                  
                     if (result.Succeeded) return RedirectToAction("UserIndex", "Home",appUser);                    
               }
                 ModelState.AddModelError("User Operations", $"Login Failed with{login.Email}. Invalid Email or Password");

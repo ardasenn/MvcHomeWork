@@ -45,7 +45,7 @@ namespace MediumClone.Controllers
         {               
             ArticlesForMainPageVM articlesForMainPageVM = new ArticlesForMainPageVM();
             articlesForMainPageVM.Id = user.Id;
-            articlesForMainPageVM.Articles = articleRepository.GetAll();
+            articlesForMainPageVM.Articles = articleRepository.GetAllIncludeAuthors();
             articlesForMainPageVM.TopViewedArticles = articleRepository.GetTop10Articles();            
             user.Categories = categoryRepository.GetCategoriesById(user.Id).ToList();
             if (user.Categories != null && user.Categories.Count > 0)
@@ -65,7 +65,7 @@ namespace MediumClone.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCategoryToUser(ArticlesForMainPageVM articlesForMainPageVM,string id)
         {
-            AppUser user = await userManager.FindByIdAsync(HttpContext.Session.GetString("userID"));
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
             Category category = categoryRepository.GetById(articlesForMainPageVM.CategoryID);            
             user.Categories.Add(category);
             IdentityResult result =await userManager.UpdateAsync(user);
@@ -94,8 +94,8 @@ namespace MediumClone.Controllers
             Article article =new Article();
             article.Title = newArticleVM.Title;
             article.Content=newArticleVM.Content;           
-            article.Author = await userManager.FindByIdAsync(HttpContext.Session.GetString("userID"));            
-            foreach (int item in newArticleVM.CategoryIds)
+            article.Author = await userManager.GetUserAsync(HttpContext.User);
+             foreach (int item in newArticleVM.CategoryIds)
             {
                 article.Categories.Add(categoryRepository.GetById(item));
             }
@@ -110,6 +110,55 @@ namespace MediumClone.Controllers
             newArticleVM.Categories = categoryRepository.GetAll();
             return View(newArticleVM);
         }
+
+        public IActionResult UpdateArticle(int id)
+        {
+            Article article= articleRepository.GetById(id);
+            NewArticleVM newArticleVM = new NewArticleVM();           
+            newArticleVM.Categories = categoryRepository.GetAll();
+            //newArticleVM.CategoriesArticle=art
+            newArticleVM.Title = article.Title;
+            newArticleVM.Content = article.Content;
+            newArticleVM.ArticleId = id;
+            return View(newArticleVM);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateArticle(NewArticleVM newArticleVM,int id)
+        {
+            if (ModelState.IsValid)
+            {
+                bool check;
+                Article article = articleRepository.GetArticlesByIdWithCategories(id);
+                article.Title = newArticleVM.Title;
+                article.Content = newArticleVM.Content;
+                article.Author = await userManager.GetUserAsync(HttpContext.User);
+                article.Categories.Clear();
+                foreach (int item in newArticleVM.CategoryIds)
+                {
+                    article.Categories.Add(categoryRepository.GetById(item));
+                }
+                check = articleRepository.Update(article);
+                if (check)
+                {
+
+                    return RedirectToAction("UserIndex", "Home", article.Author);
+                }
+                return View(newArticleVM);
+            }
+            
+            return RedirectToAction("UpdateArticle",id);
+        }
+
+        public async Task<IActionResult> MyArticles()
+        {
+            AppUser appUser = await userManager.GetUserAsync(HttpContext.User);
+            AuthorsArticlesVM authorsArticlesVM = new AuthorsArticlesVM();
+            authorsArticlesVM.Articles = articleRepository.GetAllArticlesByAuthor(appUser.Id);
+            //authorsArticlesVM.Categories=categoryRepository.
+            authorsArticlesVM.UserId = appUser.Id;
+            return View(authorsArticlesVM);
+        }
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

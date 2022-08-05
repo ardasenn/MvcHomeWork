@@ -1,0 +1,22 @@
+﻿@model AuthorsArticlesVM
+
+<section class="row">
+        @foreach (var item in Model.Articles)
+        {
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">@item.Title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Author : @item.Author.UserName</h6>
+                <p class="card-text">@item.Content.Substring(0,4)</p>
+
+               <div class="btn-group" role="group" aria-label="Basic example">
+                 <button type="button" class="btn btn-secondary">Read</button>
+                 <a class="btn btn-secondary" asp-controller="Home" asp-action="UpdateArticle" asp-route-id="@item.Id">Edit</a>
+                 <button type="button" class="btn btn-secondary">Delete</button>
+               </div>
+               <hr/>
+                <small class="text-muted">@item.CreatedTime.ToLongDateString()</small>
+              </div>
+            </div>
+        }
+    </section>  

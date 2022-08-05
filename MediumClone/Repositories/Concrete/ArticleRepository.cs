@@ -17,6 +17,15 @@ namespace MediumClone.Repositories.Concrete
         {
             this.db = db;
         }
+        public Article GetArticlesByIdWithCategories(int id)
+        {
+            return db.Articles.Include(a=>a.Categories).Where(a=>a.Id == id).FirstOrDefault();
+        }
+
+        public IEnumerable<Article> GetAllArticlesByAuthor(string id)
+        {
+            return db.Articles.Include(a=>a.Author).Where(a => a.Author.Id == id).OrderByDescending(a=>a.CreatedTime);
+        }
 
         public IEnumerable<Article> GetAllArtricleByInterestedIn(List<int> list)
         {
