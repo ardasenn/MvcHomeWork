@@ -11,7 +11,7 @@ namespace MediumClone.Repositories.Abstract
         IEnumerable<Article> GetTrendingArticles(int count);
         IEnumerable<Article> GetAllArtricleByInterestedIn(List<int> list);
         IEnumerable<Article> GetTop10Articles();
-        Article GetArticlesByIdWithCategories(int id);
+        Article GetArticleByIdWithCategories(int id);
         IEnumerable<Article> GetAllArticlesByAuthor(string id);
     }
 }

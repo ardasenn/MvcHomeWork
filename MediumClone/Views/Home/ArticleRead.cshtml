@@ -1,0 +1,15 @@
+﻿@using Entities;
+@model Article
+<div asp-validation-summary="All"></div>
+
+
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+      <small class="text-muted">@Model.CreatedTime.ToLongDateString()</small>
+      <br />
+      <small class="text-muted"> Author : @Model.Author.UserName</small>
+      <hr />
+    <h1 class="display-4">@Model.Title</h1>
+    <p class="lead">@Model.Content</p>
+  </div>
+</div>

@@ -179,6 +179,7 @@ D:\ARDA D\Arda\YAZILIM\MediumClone\MediumClone\MediumClone\obj\Debug\net5.0\Razo
 D:\ARDA D\Arda\YAZILIM\MediumClone\MediumClone\MediumClone\obj\Debug\net5.0\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
 D:\ARDA D\Arda\YAZILIM\MediumClone\MediumClone\MediumClone\obj\Debug\net5.0\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs
 D:\ARDA D\Arda\YAZILIM\MediumClone\MediumClone\MediumClone\obj\Debug\net5.0\Razor\Views\Home\AddArticle.cshtml.g.cs
+D:\ARDA D\Arda\YAZILIM\MediumClone\MediumClone\MediumClone\obj\Debug\net5.0\Razor\Views\Home\ArticleRead.cshtml.g.cs
 D:\ARDA D\Arda\YAZILIM\MediumClone\MediumClone\MediumClone\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 D:\ARDA D\Arda\YAZILIM\MediumClone\MediumClone\MediumClone\obj\Debug\net5.0\Razor\Views\Home\MyArticles.cshtml.g.cs
 D:\ARDA D\Arda\YAZILIM\MediumClone\MediumClone\MediumClone\obj\Debug\net5.0\Razor\Views\Home\UpdateArticle.cshtml.g.cs

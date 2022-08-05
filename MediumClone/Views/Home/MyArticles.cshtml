@@ -10,9 +10,9 @@
                 <p class="card-text">@item.Content.Substring(0,4)</p>
 
                <div class="btn-group" role="group" aria-label="Basic example">
-                 <button type="button" class="btn btn-secondary">Read</button>
+                 <a type="button" class="btn btn-secondary" asp-controller="Home" asp-action="ArticleRead" asp-route-id="@item.Id">Read</a>
                  <a class="btn btn-secondary" asp-controller="Home" asp-action="UpdateArticle" asp-route-id="@item.Id">Edit</a>
-                 <button type="button" class="btn btn-secondary">Delete</button>
+                 <a type="button" class="btn btn-secondary" asp-controller="Home" asp-action="DeleteArticle" asp-route-id="@item.Id">Delete</a>
                </div>
                <hr/>
                 <small class="text-muted">@item.CreatedTime.ToLongDateString()</small>

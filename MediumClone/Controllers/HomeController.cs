@@ -128,7 +128,7 @@ namespace MediumClone.Controllers
             if (ModelState.IsValid)
             {
                 bool check;
-                Article article = articleRepository.GetArticlesByIdWithCategories(id);
+                Article article = articleRepository.GetArticleByIdWithCategories(id);
                 article.Title = newArticleVM.Title;
                 article.Content = newArticleVM.Content;
                 article.Author = await userManager.GetUserAsync(HttpContext.User);
@@ -157,6 +157,20 @@ namespace MediumClone.Controllers
             //authorsArticlesVM.Categories=categoryRepository.
             authorsArticlesVM.UserId = appUser.Id;
             return View(authorsArticlesVM);
+        }
+
+        public  async Task<IActionResult> ArticleRead(int id)
+        {
+            Article article = articleRepository.GetArticleByIdWithCategories(id);
+            article.Author = await userManager.GetUserAsync(HttpContext.User);
+            article.ViewsCount += 1;
+            articleRepository.Update(article);
+            return View(article);
+        }
+        public  IActionResult DeleteArticle ( int id)
+        {
+            articleRepository.Delete(articleRepository.GetArticleByIdWithCategories(id));
+            return RedirectToAction("MyArticles");
         }
 
 

@@ -17,7 +17,7 @@ namespace MediumClone.Repositories.Concrete
         {
             this.db = db;
         }
-        public Article GetArticlesByIdWithCategories(int id)
+        public Article GetArticleByIdWithCategories(int id)
         {
             return db.Articles.Include(a=>a.Categories).Where(a=>a.Id == id).FirstOrDefault();
         }
@@ -31,7 +31,7 @@ namespace MediumClone.Repositories.Concrete
         {
             try
             {
-                return db.Articles.Where(p => p.Categories.Any(l => list.Contains(l.Id)));
+                return db.Articles.Include(a=>a.Author).Where(p => p.Categories.Any(l => list.Contains(l.Id)));
             }
             catch (Exception)
             {
