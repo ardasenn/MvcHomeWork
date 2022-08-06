@@ -19,12 +19,28 @@ namespace MediumClone.Repositories.Concrete
         }
         public Article GetArticleByIdWithCategories(int id)
         {
-            return db.Articles.Include(a=>a.Categories).Where(a=>a.Id == id).FirstOrDefault();
+            try
+            {
+                return db.Articles.Include(a => a.Categories).Where(a => a.Id == id).FirstOrDefault();
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("Error: Somethings wrong in saving process...");
+            }
         }
 
         public IEnumerable<Article> GetAllArticlesByAuthor(string id)
         {
-            return db.Articles.Include(a=>a.Author).Where(a => a.Author.Id == id).OrderByDescending(a=>a.CreatedTime);
+            try
+            {
+                return db.Articles.Include(a => a.Author).Where(a => a.Author.Id == id).OrderByDescending(a => a.CreatedTime);
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("Error: Somethings wrong in saving process...");
+            }
         }
 
         public IEnumerable<Article> GetAllArtricleByInterestedIn(List<int> list)
@@ -56,7 +72,7 @@ namespace MediumClone.Repositories.Concrete
         {
             try
             {
-                return db.Articles.Include(a => a.Author).OrderByDescending(a => a.ViewsCount).Take(3);//Eager Loading
+                return db.Articles.Include(a => a.Author).OrderByDescending(a => a.ViewsCount).Take(10);//Eager Loading
             }
             catch (Exception)
             {
@@ -75,6 +91,11 @@ namespace MediumClone.Repositories.Concrete
             {
                 throw new Exception("Error: Somethings wrong in saving process...");
             }
+        }
+
+        public Article GetArticleWithCategoriesAndAuthor(int id)
+        {
+            return db.Articles.Include(a=>a.Author).Include(a => a.Categories).Where(a => a.Id == id).FirstOrDefault();
         }
     }
 }

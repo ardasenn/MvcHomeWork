@@ -7,8 +7,7 @@
               <div class="card-body">
                 <h5 class="card-title">@item.Title</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Author : @item.Author.UserName</h6>
-                <p class="card-text">@item.Content.Substring(0,4)</p>
-
+                <p class="card-text">@item.Content.Substring(0,60)</p>
                <div class="btn-group" role="group" aria-label="Basic example">
                  <a type="button" class="btn btn-secondary" asp-controller="Home" asp-action="ArticleRead" asp-route-id="@item.Id">Read</a>
                  <a class="btn btn-secondary" asp-controller="Home" asp-action="UpdateArticle" asp-route-id="@item.Id">Edit</a>
@@ -19,4 +18,5 @@
               </div>
             </div>
         }
-    </section>  
+    </section> 
+         

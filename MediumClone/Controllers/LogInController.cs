@@ -17,24 +17,28 @@ namespace MediumClone.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl)
         {
+            TempData["returnUrl"] = returnUrl;
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM login)
         {
             if (ModelState.IsValid)
-            { AppUser appUser = await userManager.FindByEmailAsync(login.Email);
-              if(appUser != null)
+            {
+                AppUser appUser = await userManager.FindByEmailAsync(login.Email);
+                if (appUser != null)
                 {
-                    Microsoft.AspNetCore.Identity.SignInResult result =  await signInManager.PasswordSignInAsync(appUser, login.Password, false, false);                  
-                    if (result.Succeeded) return RedirectToAction("UserIndex", "Home",appUser);                    
-              }
+                    await signInManager.SignOutAsync();//Cookie siler öncekileri
+                    Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(appUser, login.Password, login.Persistent, false);
+                    if (result.Succeeded) return RedirectToAction("UserIndex", "Home", appUser);
+                }
                 ModelState.AddModelError("User Operations", $"Login Failed with{login.Email}. Invalid Email or Password");
-            }            
-            return View(login);            
-        }
+            }
+            return View(login);
+        }       
+
         public async Task<IActionResult> LogOut()
         {
             await signInManager.SignOutAsync();

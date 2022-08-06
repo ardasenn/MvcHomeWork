@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace MediumClone.Controllers
-{
+{   
     public class SignInController : Controller
     {
         private readonly UserManager<AppUser> userManager;
@@ -32,11 +32,12 @@ namespace MediumClone.Controllers
                 appUser.UserName = user.UserName;
                 appUser.Email = user.Email;
                 appUser.FirstName = user.FirstName;
-                appUser.LastName = user.LastName;
+                appUser.LastName = user.LastName;                
                 IdentityResult result = await userManager.CreateAsync(appUser, user.Password);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("UserIndex", "Home");//sonradan değiştiriliecek
+                IdentityResult resultRole = await userManager.AddToRoleAsync(appUser, "User");
+                if (result.Succeeded && resultRole.Succeeded)
+                {                   
+                    return RedirectToAction("UserIndex", "Home");//sonradan değiştiriliecek                    
                 }
                 else
                 {

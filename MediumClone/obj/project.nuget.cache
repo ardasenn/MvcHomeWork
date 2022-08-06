@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "MVp/FfvpsL3FdAChhXv/n7KV1p02i/seDKHseMcvL85+JhaWu6Omg7PPXWTOcim9uOSsKJu8Y+OUhjbUpKzrjA==",
+  "dgSpecHash": "sMbbXNGE5yi7ak/LKdDaBOiTqac/No5P5hMT98whn89jzTWcDoAz/2Qpd/AEK2bpALD/0chE8YePgQx+T4VKIA==",
   "success": true,
   "projectFilePath": "D:\\ARDA D\\Arda\\YAZILIM\\MediumClone\\MediumClone\\MediumClone\\MediumClone.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Arda\\.nuget\\packages\\fluentvalidation\\11.1.0\\fluentvalidation.11.1.0.nupkg.sha512",
+    "C:\\Users\\Arda\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.1.2\\fluentvalidation.aspnetcore.11.1.2.nupkg.sha512",
+    "C:\\Users\\Arda\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.1.0\\fluentvalidation.dependencyinjectionextensions.11.1.0.nupkg.sha512",
     "C:\\Users\\Arda\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Arda\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\5.0.17\\microsoft.aspnetcore.cryptography.internal.5.0.17.nupkg.sha512",
     "C:\\Users\\Arda\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\5.0.17\\microsoft.aspnetcore.cryptography.keyderivation.5.0.17.nupkg.sha512",

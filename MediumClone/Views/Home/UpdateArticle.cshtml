@@ -13,19 +13,25 @@
             <textarea asp-for="Content" class="form-control" value="@Model.Content" rows="15"></textarea>
          </div>
          <table  class="table table-bordered table-sm">
-         @foreach (var item in Model.Categories)
-        {
+         @foreach (var item in Model.AllCategories)
+         {
                 <tr>
                     <td>
                         @item.Name
-                    </td>
-                    <td>
-                        <input checked="checked" type="checkbox" name="CategoryIds" value="@item.Id" /> 
-                    </td>
+                    </td>                   
+                     <td>
+                        @if (Model.CategoriesArticle.Contains(item))
+                        {
+                           <input checked="checked" type="checkbox" name="CategoryIds" value="@item.Id" />  
+                        }
+                        else{ 
+                            <input type="checkbox" name="CategoryIds" value="@item.Id" /> 
+                        }
+                        
+                    </td>                         
                 </tr>
-        }
-            </table>
-
+         }
+         </table>
          <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" asp-route-id="@Model.ArticleId"/>
          </div>        

@@ -7,7 +7,7 @@
   <div class="container">
       <small class="text-muted">@Model.CreatedTime.ToLongDateString()</small>
       <br />
-      <small class="text-muted"> Author : @Model.Author.UserName</small>
+      <a asp-action="UserPage" asp-route-id="@Model.Author.Id"><small class="text-muted"> Author : @Model.Author.UserName</small></a>
       <hr />
     <h1 class="display-4">@Model.Title</h1>
     <p class="lead">@Model.Content</p>

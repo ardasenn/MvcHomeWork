@@ -27,7 +27,7 @@ using MediumClone.Models;
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"73360535f3e15853de4c483c93abfd3e2d3d6e0a", @"/Views/Home/_AddCategoryToAuthorPartial.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"4bc32d31219e0f1fe0e42fef6352744e5f4ce697", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"c29127cb6b330bca40de02d00b644aeab94ff249", @"/Views/_ViewImports.cshtml")]
     #nullable restore
     public class Views_Home__AddCategoryToAuthorPartial : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<ArticlesForMainPageVM>
     #nullable disable

@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using MediumClone.Models.Authentication;
 using MediumClone.Models.Context;
 using MediumClone.Repositories.Abstract;
@@ -30,19 +31,23 @@ namespace MediumClone
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>());
             services.AddDbContext<AppDbContext>(a => a.UseSqlServer(Configuration["ConnectionStrings:ConStr"]));
-            services.AddIdentity<AppUser,IdentityRole>().AddEntityFrameworkStores<AppDbContext>();//identity role þuan standart olarak ayaða kalkacak.Eðer deðiþtirmek istiyorsam kalýtým verdiðim sýnýfý yazmam gerekiyor.
+            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();//identity role þuan standart olarak ayaða kalkacak.Eðer deðiþtirmek istiyorsam kalýtým verdiðim sýnýfý yazmam gerekiyor.
             services.AddTransient(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IArticleRepository, ArticleRepository>();
-            services.AddTransient<ICategoryRepository, CategoryRepository>();     services.AddSession();      
+            services.AddTransient<ICategoryRepository, CategoryRepository>(); services.AddSession();
             services.ConfigureApplicationCookie(option =>
             {
-                option.Cookie.Name = "CloneMediumUser";//cookie adý bu
-                option.ExpireTimeSpan = TimeSpan.FromHours(1);//1 saat iþlem olmazsa session sonlanýr
-                option.SlidingExpiration = true;//iþlem yaðtýðýnda süreyi sýfýrlar
-                option.LoginPath = "/LogIn/LogIn";
+                option.Cookie.Name = "Mycookie";
+                option.ExpireTimeSpan = TimeSpan.FromMinutes(120);
+                option.SlidingExpiration = true;
+                option.LoginPath = "/LogIn/Login";
+                option.AccessDeniedPath = "/Home/AccessDenied";
             });
+            
+           
+
 
         }
 
@@ -67,7 +72,7 @@ namespace MediumClone
 
             app.UseAuthorization();
             app.UseAuthentication();//Identity için bunu ekledik
-            app.UseSession();
+            app.UseSession();            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

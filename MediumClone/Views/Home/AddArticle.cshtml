@@ -15,7 +15,7 @@
             <textarea asp-for="Content" class="form-control" value="@Model.Content" rows="15"></textarea>
          </div>
          <table  class="table table-bordered table-sm">
-         @foreach (var item in Model.Categories)
+         @foreach (var item in Model.AllCategories)
         {
                 <tr>
                     <td>

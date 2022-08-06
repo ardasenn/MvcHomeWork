@@ -10,7 +10,7 @@
   <a class="btn btn-primary" asp-action="AddArticle"> Makale Ekle </a>
    <a class="btn btn-primary" asp-action="MyArticles" asp-route-id="@Model.Id"> Makalelerim </a>
 
-@if (Model.InterestedArticles!=null && Model.InterestedArticles.Count()>0)
+@if ( Model.InterestedArticles.Count()>0)
 {
 <div id="InteredtedArticles">
  <main class="container-fluid p-4">
@@ -18,13 +18,19 @@
     <section class="row">
         @foreach (var item in Model.InterestedArticles)
         {               
-            <div class="card" style="width: 18rem;">
+              <div class="card" style="width: 18rem;">
               <div class="card-body">
                 <h5 class="card-title">@item.Title</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Author : @item.Author.UserName</h6>
-                <p class="card-text">@item.Content.Substring(0,5)</p>                
+                <h6 class="card-subtitle mb-2 text-muted">Views : @item.ViewsCount</h6>
+                <p class="card-text">@item.Content.Substring(0,60)</p>
+                <hr/>                
+                <a class="card-link" asp-action="ArticleRead" asp-route-id="@item.Id">Read</a>
+                <small class="text-muted">@item.ReadTime Mins Read Time</small>
+                <br>
+                <small class="text-muted">@item.CreatedTime</small>
               </div>
-            </div>  
+            </div>
         }
     </section>     
 </main>
@@ -37,13 +43,19 @@
     <section class="row">
         @foreach (var item in Model.TopViewedArticles)
         {            
-          <div class="card" style="width: 18rem;">
+            <div class="card" style="width: 18rem;">
               <div class="card-body">
                 <h5 class="card-title">@item.Title</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Author : @item.Author.UserName</h6>
-                <p class="card-text">@item.Content.Substring(0,5)</p>                
+                <h6 class="card-subtitle mb-2 text-muted">Views : @item.ViewsCount</h6>
+                <p class="card-text">@item.Content.Substring(0,60)</p>
+                <hr/>                
+                <a class="card-link" asp-action="ArticleRead" asp-route-id="@item.Id">Read</a>
+                <small class="text-muted">@item.ReadTime Mins Read Time</small>
+                <br>
+                <small class="text-muted">@item.CreatedTime</small>
               </div>
-            </div> 
+            </div>
         }
     </section>     
 </main>
@@ -55,13 +67,19 @@
     <section class="row">
         @foreach (var item in Model.Articles)
         {            
-           <div class="card" style="width: 18rem;">
+             <div class="card" style="width: 18rem;">
               <div class="card-body">
                 <h5 class="card-title">@item.Title</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Author : @item.Author.UserName</h6>
-                <p class="card-text">@item.Content.Substring(0,5)</p>                
+                <h6 class="card-subtitle mb-2 text-muted">Views : @item.ViewsCount</h6>
+                <p class="card-text">@item.Content.Substring(0,60)</p>
+                <hr/>                
+                <a class="card-link" asp-action="ArticleRead" asp-route-id="@item.Id">Read</a>
+                <small class="text-muted">@item.ReadTime Mins Read Time</small>
+                <br>
+                <small class="text-muted">@item.CreatedTime</small>
               </div>
-            </div> 
+            </div>
         }
     </section>     
 </main>

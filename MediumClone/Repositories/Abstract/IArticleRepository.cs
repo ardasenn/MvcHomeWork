@@ -13,5 +13,6 @@ namespace MediumClone.Repositories.Abstract
         IEnumerable<Article> GetTop10Articles();
         Article GetArticleByIdWithCategories(int id);
         IEnumerable<Article> GetAllArticlesByAuthor(string id);
+        Article GetArticleWithCategoriesAndAuthor(int id);
     }
 }

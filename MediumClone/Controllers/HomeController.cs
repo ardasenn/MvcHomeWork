@@ -39,7 +39,7 @@ namespace MediumClone.Controllers
             
             return View(articlesForMainPageVM);
         }
-        //[Authorize]
+        //[Authorize(Roles ="User,Admin")]
         [HttpGet]
         public async Task<IActionResult> UserIndex(AppUser user)
         {               
@@ -56,12 +56,14 @@ namespace MediumClone.Controllers
             }     
             return View(articlesForMainPageVM);     
         }
+       // [Authorize(Roles = "User,Admin")]
         public IActionResult AddCategoryToUser()
         {
             ArticlesForMainPageVM articlesForMainPageVM=new ArticlesForMainPageVM();
             articlesForMainPageVM.Categories=categoryRepository.GetAll();  
             return PartialView("_AddCategoryToAuthorPartial", articlesForMainPageVM);
         }
+       // [Authorize(Roles = "User,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddCategoryToUser(ArticlesForMainPageVM articlesForMainPageVM,string id)
         {
@@ -79,10 +81,11 @@ namespace MediumClone.Controllers
                  return Json("Fail");
             }
         }
+       // [Authorize]
         public IActionResult AddArticle()
         {
             NewArticleVM newArticleVM = new NewArticleVM();
-            newArticleVM.Categories=categoryRepository.GetAll();            
+            newArticleVM.AllCategories = categoryRepository.GetAll();            
             return View(newArticleVM);
         }
         [HttpPost]
@@ -93,8 +96,10 @@ namespace MediumClone.Controllers
             bool check;
             Article article =new Article();
             article.Title = newArticleVM.Title;
-            article.Content=newArticleVM.Content;           
-            article.Author = await userManager.GetUserAsync(HttpContext.User);
+            article.Content=newArticleVM.Content;            
+            string[] words = article.Content.Split(' ');
+            article.ReadTime = words.Length/ 220;              
+             article.Author = await userManager.GetUserAsync(HttpContext.User);
              foreach (int item in newArticleVM.CategoryIds)
             {
                 article.Categories.Add(categoryRepository.GetById(item));
@@ -107,16 +112,16 @@ namespace MediumClone.Controllers
             }
             return View(newArticleVM);
             }
-            newArticleVM.Categories = categoryRepository.GetAll();
+            newArticleVM.AllCategories = categoryRepository.GetAll();
             return View(newArticleVM);
         }
 
         public IActionResult UpdateArticle(int id)
         {
-            Article article= articleRepository.GetById(id);
+            Article article= articleRepository.GetArticleByIdWithCategories(id);
             NewArticleVM newArticleVM = new NewArticleVM();           
-            newArticleVM.Categories = categoryRepository.GetAll();
-            //newArticleVM.CategoriesArticle=art
+            newArticleVM.AllCategories = categoryRepository.GetAll();
+            newArticleVM.CategoriesArticle = article.Categories;
             newArticleVM.Title = article.Title;
             newArticleVM.Content = article.Content;
             newArticleVM.ArticleId = id;
@@ -159,10 +164,10 @@ namespace MediumClone.Controllers
             return View(authorsArticlesVM);
         }
 
-        public  async Task<IActionResult> ArticleRead(int id)
+        public IActionResult ArticleRead(int id)
         {
-            Article article = articleRepository.GetArticleByIdWithCategories(id);
-            article.Author = await userManager.GetUserAsync(HttpContext.User);
+            Article article = articleRepository.GetArticleWithCategoriesAndAuthor(id);
+            //article.Author = await userManager.GetUserAsync(HttpContext.User);
             article.ViewsCount += 1;
             articleRepository.Update(article);
             return View(article);
@@ -173,7 +178,17 @@ namespace MediumClone.Controllers
             return RedirectToAction("MyArticles");
         }
 
-
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+        public async Task<IActionResult> UserPage(string id)
+        {
+            AppUser user = await userManager.FindByIdAsync(id);
+            user.Articles = articleRepository.GetAllArticlesByAuthor(id).ToList();
+            return View(user);
+            
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

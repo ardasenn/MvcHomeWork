@@ -8,17 +8,17 @@ namespace MediumClone.Models
     {
         public NewArticleVM()
         {
-            Categories = new HashSet<Category>();
+            AllCategories = new HashSet<Category>();
             CategoriesArticle=new List<Category>();
         }
-        [Required]
+       
         public string Title { get; set; }
-        [Required]
+       
         public string Content { get; set; }
-        [Required]
+        
         public int[] CategoryIds { get; set; }
 
-        public IEnumerable<Category> Categories { get; set; }
+        public IEnumerable<Category> AllCategories { get; set; }
         public IEnumerable<Category> CategoriesArticle { get; set; }
         public int ArticleId { get; set; }
     }

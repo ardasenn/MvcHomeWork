@@ -1,0 +1,37 @@
+﻿@using MediumClone.Models.Authentication
+
+@model AppUser
+
+
+
+<div class="jumbotron">
+  <h1 class="display-4">@Model.FirstName @Model.LastName</h1>  
+  <p class="lead">@Model.UserName</p>
+  <hr class="my-4">
+  <p>@Model.UserDescription</p>
+  
+</div>
+<hr/>
+<div id="PersonelArticles">
+ <main class="container-fluid p-4">
+    <h2 class="mt-5 mt-3">@Model.UserName has these articles </h2>
+    <section class="row">
+        @foreach (var item in Model.Articles)
+        {            
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">@item.Title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Author : @item.Author.UserName</h6>
+                <h6 class="card-subtitle mb-2 text-muted">Views : @item.ViewsCount</h6>
+                <p class="card-text">@item.Content.Substring(0,60)</p>
+                <hr/>                
+                <a class="card-link" asp-action="ArticleRead" asp-route-id="@item.Id">Read</a>
+                <small class="text-muted">@item.ReadTime Mins Read Time</small>
+                <br>
+                <small class="text-muted">@item.CreatedTime</small>
+              </div>
+            </div>
+        }
+    </section>     
+</main>
+</div>
