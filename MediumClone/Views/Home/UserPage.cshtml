@@ -1,22 +1,24 @@
 ﻿@using MediumClone.Models.Authentication
 
-@model AppUser
+@model ProfilePageVM
 
 
-
+<div>
+    <img src="@("~/image/"+Model.ImageName)" asp-append-version="true" width="250px" height="250px"/>
+</div>
 <div class="jumbotron">
-  <h1 class="display-4">@Model.FirstName @Model.LastName</h1>  
-  <p class="lead">@Model.UserName</p>
+  <h1 class="display-4">@Model.user.FirstName @Model.user.LastName</h1>  
+  <p class="lead">@Model.user.UserName</p>
   <hr class="my-4">
-  <p>@Model.UserDescription</p>
+  <p>@Model.user.UserDescription</p>
   
 </div>
 <hr/>
 <div id="PersonelArticles">
  <main class="container-fluid p-4">
-    <h2 class="mt-5 mt-3">@Model.UserName has these articles </h2>
+    <h2 class="mt-5 mt-3">@Model.user.UserName has these articles </h2>
     <section class="row">
-        @foreach (var item in Model.Articles)
+        @foreach (var item in Model.user.Articles)
         {            
             <div class="card" style="width: 18rem;">
               <div class="card-body">

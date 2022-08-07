@@ -14,5 +14,6 @@ namespace MediumClone.Repositories.Abstract
         Article GetArticleByIdWithCategories(int id);
         IEnumerable<Article> GetAllArticlesByAuthor(string id);
         Article GetArticleWithCategoriesAndAuthor(int id);
+        IEnumerable<Article> GetAllArticleWithCategoriesAndAuthor();
     }
 }

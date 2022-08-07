@@ -9,6 +9,7 @@
   </div>
   <a class="btn btn-primary" asp-action="AddArticle"> Makale Ekle </a>
    <a class="btn btn-primary" asp-action="MyArticles" asp-route-id="@Model.Id"> Makalelerim </a>
+   <a class="btn btn-primary" asp-action="UserPage" asp-route-id="@Model.Id"> Sayfam </a>
 
 @if ( Model.InterestedArticles.Count()>0)
 {

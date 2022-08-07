@@ -96,6 +96,26 @@ namespace MediumClone.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("MediumClone.Entities.ProfileImage", b =>
+                {
+                    b.Property<int>("ImageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ImageId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProfileImage");
+                });
+
             modelBuilder.Entity("MediumClone.Models.Authentication.AppUser", b =>
                 {
                     b.Property<string>("Id")
@@ -340,6 +360,15 @@ namespace MediumClone.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("MediumClone.Entities.ProfileImage", b =>
+                {
+                    b.HasOne("MediumClone.Models.Authentication.AppUser", "User")
+                        .WithMany("ProfileImages")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -394,6 +423,8 @@ namespace MediumClone.Migrations
             modelBuilder.Entity("MediumClone.Models.Authentication.AppUser", b =>
                 {
                     b.Navigation("Articles");
+
+                    b.Navigation("ProfileImages");
                 });
 #pragma warning restore 612, 618
         }

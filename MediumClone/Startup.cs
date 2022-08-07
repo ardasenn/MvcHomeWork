@@ -3,11 +3,13 @@ using MediumClone.Models.Authentication;
 using MediumClone.Models.Context;
 using MediumClone.Repositories.Abstract;
 using MediumClone.Repositories.Concrete;
+using MediumClone.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,12 +33,18 @@ namespace MediumClone
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>());
+           
             services.AddDbContext<AppDbContext>(a => a.UseSqlServer(Configuration["ConnectionStrings:ConStr"]));
-            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();//identity role þuan standart olarak ayaða kalkacak.Eðer deðiþtirmek istiyorsam kalýtým verdiðim sýnýfý yazmam gerekiyor.
+            services.AddIdentity<AppUser, IdentityRole>(options =>
+            {                
+                options.SignIn.RequireConfirmedEmail = false ;
+            }).AddEntityFrameworkStores<AppDbContext>();//identity role þuan standart olarak ayaða kalkacak.Eðer deðiþtirmek istiyorsam kalýtým verdiðim sýnýfý yazmam gerekiyor.
             services.AddTransient(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IArticleRepository, ArticleRepository>();
-            services.AddTransient<ICategoryRepository, CategoryRepository>(); services.AddSession();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IImageRepository, ImageRepository>();
+            services.AddSession();
+            services.AddTransient<IEmailSender, EmailSender>();
             services.ConfigureApplicationCookie(option =>
             {
                 option.Cookie.Name = "Mycookie";
@@ -46,6 +54,7 @@ namespace MediumClone
                 option.AccessDeniedPath = "/Home/AccessDenied";
             });
             
+            services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>());
            
 
 

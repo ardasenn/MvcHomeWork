@@ -95,7 +95,28 @@ namespace MediumClone.Repositories.Concrete
 
         public Article GetArticleWithCategoriesAndAuthor(int id)
         {
-            return db.Articles.Include(a=>a.Author).Include(a => a.Categories).Where(a => a.Id == id).FirstOrDefault();
+            try
+            {
+                return db.Articles.Include(a => a.Author).Include(a => a.Categories).Where(a => a.Id == id).FirstOrDefault();
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("Error: Somethings wrong in saving process...");
+            }
+        }
+        public IEnumerable<Article> GetAllArticleWithCategoriesAndAuthor()
+        {
+            try
+            {
+                return db.Articles.Include(a => a.Author).Include(a => a.Categories);
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("Error: Somethings wrong in saving process...");
+            }
         }
     }
 }
+

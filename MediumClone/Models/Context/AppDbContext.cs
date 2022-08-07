@@ -1,4 +1,5 @@
 ﻿using Entities;
+using MediumClone.Entities;
 using MediumClone.Models.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -16,8 +17,13 @@ namespace MediumClone.Models.Context
         public DbSet<Category> Categories { get; set; }        
         protected override void OnModelCreating(ModelBuilder builder)
         {
+           builder.Entity<ProfileImage>().HasOne<AppUser>(a=>a.User).WithMany(b=>b.ProfileImages).HasForeignKey(s=>s.UserId);
             builder.Entity<Article>().HasMany(a => a.Categories).WithMany(b => b.Articles);
-            builder.Entity<AppUser>().HasMany(a=>a.Categories).WithMany(b=>b.AppUsers);            
+            builder.Entity<AppUser>().HasMany(a=>a.Categories).WithMany(b=>b.AppUsers);
+            builder.Entity<ProfileImage>().Ignore(a => a.ImageFile);
+            builder.Entity<ProfileImage>().HasKey(a => a.ImageId);
+
+
             base.OnModelCreating(builder);
         }
     }

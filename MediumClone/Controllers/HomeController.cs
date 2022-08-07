@@ -1,8 +1,10 @@
 ﻿using Entities;
+using MediumClone.Entities;
 using MediumClone.Models;
 using MediumClone.Models.Authentication;
 using MediumClone.Repositories.Abstract;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,21 +25,25 @@ namespace MediumClone.Controllers
         private readonly IArticleRepository articleRepository;
         private readonly ICategoryRepository categoryRepository;
         private readonly UserManager<AppUser> userManager;
+        private readonly IWebHostEnvironment hostEnvironment;
+        private readonly IImageRepository imageRepository;
 
-        public HomeController(ILogger<HomeController> logger, IArticleRepository articleRepository, ICategoryRepository categoryRepository, UserManager<AppUser> userManager)
+        public HomeController(ILogger<HomeController> logger, IArticleRepository articleRepository, ICategoryRepository categoryRepository, UserManager<AppUser> userManager,IWebHostEnvironment hostEnvironment,IImageRepository imageRepository)
         {
             _logger = logger;
             this.articleRepository = articleRepository;
             this.categoryRepository = categoryRepository;
             this.userManager = userManager;
+            this.hostEnvironment = hostEnvironment;
+            this.imageRepository = imageRepository;
         }
         [AllowAnonymous]
         public IActionResult Index()
         {
             ArticlesForMainPageVM articlesForMainPageVM = new ArticlesForMainPageVM();
-            articlesForMainPageVM.Articles = articleRepository.GetAllIncludeAuthors();
-            articlesForMainPageVM.TopViewedArticles = articleRepository.GetTrendingArticles(100);
-            
+            articlesForMainPageVM.Articles = articleRepository.GetAllIncludeAuthors();            
+             IEnumerable<Article> list= articleRepository.GetTrendingArticles(100);
+            if (list != null) { articlesForMainPageVM.TopViewedArticles = list; }
             return View(articlesForMainPageVM);
         }
         //[Authorize(Roles ="User,Admin")]
@@ -90,7 +97,7 @@ namespace MediumClone.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> AddArticle(NewArticleVM newArticleVM)
-        {
+        {            
             if (ModelState.IsValid)
             {
             bool check;
@@ -99,7 +106,7 @@ namespace MediumClone.Controllers
             article.Content=newArticleVM.Content;            
             string[] words = article.Content.Split(' ');
             article.ReadTime = words.Length/ 220;              
-             article.Author = await userManager.GetUserAsync(HttpContext.User);
+            article.Author = await userManager.GetUserAsync(HttpContext.User);
              foreach (int item in newArticleVM.CategoryIds)
             {
                 article.Categories.Add(categoryRepository.GetById(item));
@@ -184,11 +191,56 @@ namespace MediumClone.Controllers
         }
         public async Task<IActionResult> UserPage(string id)
         {
-            AppUser user = await userManager.FindByIdAsync(id);
-            user.Articles = articleRepository.GetAllArticlesByAuthor(id).ToList();
-            return View(user);
-            
+            AppUser appUser = await userManager.FindByIdAsync(id);
+            appUser.Articles = articleRepository.GetAllArticlesByAuthor(id).ToList();            
+            ProfilePageVM user = new ProfilePageVM();
+            user.user = appUser;
+            ProfileImage image= imageRepository.GetImageByUserId(id);
+            user.ImageName = image.ImageName;
+            return View(user);            
         }
+        public IActionResult ChangeImage()
+        {              
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangeImage([Bind("ImageFile")] ImageVM image)
+        {
+            if(ModelState.IsValid)
+            {
+                string wwwRoothPath = hostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(image.ImageFile.FileName);
+                string extension = Path.GetExtension(image.ImageFile.FileName);
+                image.ImageName=fileName = fileName + DateTime.Now.ToString("yymmssfff")+extension;
+                string path = Path.Combine(wwwRoothPath + "/Image/", fileName);
+                using (var fileStream =new FileStream(path, FileMode.Create))
+                {
+                    await image.ImageFile.CopyToAsync(fileStream);
+                }
+                ProfileImage profileImage = new ProfileImage();
+                profileImage.ImageFile = image.ImageFile;
+                profileImage.ImageName = image.ImageName;
+                profileImage.User = await userManager.GetUserAsync(HttpContext.User);
+                bool check= imageRepository.Add(profileImage);
+                return RedirectToAction("UserIndex");
+                
+            }
+            return View();
+        }
+
+        public IActionResult SearchPage()
+        {
+            SearchVM searchVM = new SearchVM();
+            searchVM.Articles=articleRepository.GetAllArticleWithCategoriesAndAuthor();
+            searchVM.AllCategories = categoryRepository.GetAll();
+            return View(searchVM);
+        }
+        //[HttpPost]
+        //public IActionResult SearchPage()
+        //{
+
+        //    return View();
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
