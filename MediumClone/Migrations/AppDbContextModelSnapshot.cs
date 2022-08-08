@@ -111,7 +111,9 @@ namespace MediumClone.Migrations
 
                     b.HasKey("ImageId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("ProfileImage");
                 });
@@ -363,8 +365,8 @@ namespace MediumClone.Migrations
             modelBuilder.Entity("MediumClone.Entities.ProfileImage", b =>
                 {
                     b.HasOne("MediumClone.Models.Authentication.AppUser", "User")
-                        .WithMany("ProfileImages")
-                        .HasForeignKey("UserId");
+                        .WithOne("ProfileImage")
+                        .HasForeignKey("MediumClone.Entities.ProfileImage", "UserId");
 
                     b.Navigation("User");
                 });
@@ -424,7 +426,7 @@ namespace MediumClone.Migrations
                 {
                     b.Navigation("Articles");
 
-                    b.Navigation("ProfileImages");
+                    b.Navigation("ProfileImage");
                 });
 #pragma warning restore 612, 618
         }

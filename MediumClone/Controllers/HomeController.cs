@@ -45,8 +45,7 @@ namespace MediumClone.Controllers
              IEnumerable<Article> list= articleRepository.GetTrendingArticles(100);
             if (list != null) { articlesForMainPageVM.TopViewedArticles = list; }
             return View(articlesForMainPageVM);
-        }
-        //[Authorize(Roles ="User,Admin")]
+        }        
         [HttpGet]
         public async Task<IActionResult> UserIndex(AppUser user)
         {               
@@ -192,11 +191,18 @@ namespace MediumClone.Controllers
         public async Task<IActionResult> UserPage(string id)
         {
             AppUser appUser = await userManager.FindByIdAsync(id);
-            appUser.Articles = articleRepository.GetAllArticlesByAuthor(id).ToList();            
+            if (appUser == null)
+            {
+                appUser =await userManager.GetUserAsync(HttpContext.User);               
+            }
+            appUser.Articles = articleRepository.GetAllArticlesByAuthor(id).ToList();           
             ProfilePageVM user = new ProfilePageVM();
-            user.user = appUser;
-            ProfileImage image= imageRepository.GetImageByUserId(id);
+            user.user = appUser;            
+            ProfileImage image= imageRepository.GetImageByUserId(appUser.Id);
+            if (image != null)
+            {
             user.ImageName = image.ImageName;
+            }
             return View(user);            
         }
         public IActionResult ChangeImage()
@@ -222,10 +228,23 @@ namespace MediumClone.Controllers
                 profileImage.ImageName = image.ImageName;
                 profileImage.User = await userManager.GetUserAsync(HttpContext.User);
                 bool check= imageRepository.Add(profileImage);
-                return RedirectToAction("UserIndex");
-                
+                if(check) return RedirectToAction("UserIndex");
+                else return View();
             }
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteImage()
+        {
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+            user.ProfileImage = imageRepository.GetImageByUserId(user.Id);
+            ProfileImage profileImage = user.ProfileImage;
+            var imagePath = Path.Combine(hostEnvironment.WebRootPath, "image", user.ProfileImage.ImageName);
+            if (System.IO.File.Exists(imagePath)) System.IO.File.Delete(imagePath);
+            bool check = imageRepository.Delete(profileImage);
+            if(check) return View("ChangeImage");
+            ModelState.AddModelError("Profile Image","Somethings were wrong");
+            return View("ChangeImage");
         }
 
         public IActionResult SearchPage()

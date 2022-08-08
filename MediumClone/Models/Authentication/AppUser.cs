@@ -13,13 +13,12 @@ namespace MediumClone.Models.Authentication
         public string LastName { get; set; }        
         public string UserDescription { get; set; }       
         public ICollection<Category> Categories { get; set; }        
-        public ICollection<ProfileImage> ProfileImages { get; set; }
+        public ProfileImage ProfileImage { get; set; }
 
         public AppUser()
         {
             Articles = new HashSet<Article>();
-            Categories = new HashSet<Category>();
-            ProfileImages= new HashSet<ProfileImage>();
+            Categories = new HashSet<Category>();           
         }
         public ICollection<Article> Articles { get; set; }
     }

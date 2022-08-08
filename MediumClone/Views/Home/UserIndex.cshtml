@@ -10,6 +10,7 @@
   <a class="btn btn-primary" asp-action="AddArticle"> Makale Ekle </a>
    <a class="btn btn-primary" asp-action="MyArticles" asp-route-id="@Model.Id"> Makalelerim </a>
    <a class="btn btn-primary" asp-action="UserPage" asp-route-id="@Model.Id"> Sayfam </a>
+    <a class="btn btn-primary" asp-action="ChangeImage" asp-route-id="@Model.Id"> Profil fotoğrafı Değiştir </a>
 
 @if ( Model.InterestedArticles.Count()>0)
 {

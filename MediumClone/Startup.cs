@@ -3,7 +3,6 @@ using MediumClone.Models.Authentication;
 using MediumClone.Models.Context;
 using MediumClone.Repositories.Abstract;
 using MediumClone.Repositories.Concrete;
-using MediumClone.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -37,14 +36,14 @@ namespace MediumClone
             services.AddDbContext<AppDbContext>(a => a.UseSqlServer(Configuration["ConnectionStrings:ConStr"]));
             services.AddIdentity<AppUser, IdentityRole>(options =>
             {                
-                options.SignIn.RequireConfirmedEmail = false ;
-            }).AddEntityFrameworkStores<AppDbContext>();//identity role þuan standart olarak ayaða kalkacak.Eðer deðiþtirmek istiyorsam kalýtým verdiðim sýnýfý yazmam gerekiyor.
+                options.SignIn.RequireConfirmedEmail = true ;
+            }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders().AddEntityFrameworkStores<AppDbContext>();//identity role þuan standart olarak ayaða kalkacak.Eðer deðiþtirmek istiyorsam kalýtým verdiðim sýnýfý yazmam gerekiyor.
             services.AddTransient(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IArticleRepository, ArticleRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IImageRepository, ImageRepository>();
             services.AddSession();
-            services.AddTransient<IEmailSender, EmailSender>();
+            //services.AddTransient<IEmailSender, EmailSender>();
             services.ConfigureApplicationCookie(option =>
             {
                 option.Cookie.Name = "Mycookie";
@@ -52,6 +51,7 @@ namespace MediumClone
                 option.SlidingExpiration = true;
                 option.LoginPath = "/LogIn/Login";
                 option.AccessDeniedPath = "/Home/AccessDenied";
+
             });
             
             services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>());
