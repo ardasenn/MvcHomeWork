@@ -45,7 +45,8 @@ namespace MediumClone.Controllers
              IEnumerable<Article> list= articleRepository.GetTrendingArticles(100);
             if (list != null) { articlesForMainPageVM.TopViewedArticles = list; }
             return View(articlesForMainPageVM);
-        }        
+        }
+        //[Authorize(Roles = "User,Admin")]
         [HttpGet]
         public async Task<IActionResult> UserIndex(AppUser user)
         {               

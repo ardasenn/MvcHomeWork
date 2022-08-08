@@ -49,19 +49,17 @@ namespace MediumClone.Controllers
                     MailMessage mail = new MailMessage();
                     mail.IsBodyHtml = true;
                     mail.To.Add(user.Email);
-                    mail.From = new MailAddress("ardasen.business@gmail.com", "Email Onaylama Servisi", System.Text.Encoding.UTF8);
-                    mail.Subject = "Şifre Güncelleme Talebi";
+                    mail.From = new MailAddress("yourgmail", "Email Onaylama Servisi", System.Text.Encoding.UTF8);
+                    mail.Subject = "Email Onay";
                     var confirmationLink = Url.Action("VerifyEmail", "SignIn", new { emailToken, userId =appUser.Id }, Request.Scheme);
                     mail.Body = confirmationLink;
                     mail.IsBodyHtml = true;
                     SmtpClient smp = new SmtpClient();
-                    smp.Credentials = new NetworkCredential("ardasen.business@gmail.com", "fgywhklxwbwpusyg");
+                    smp.Credentials = new NetworkCredential("yourgmail", "*****");
                     smp.Port = 587;
                     smp.Host = "smtp.gmail.com";
                     smp.EnableSsl = true;
-                    await smp.SendMailAsync(mail);
-                    //SendEmail(appUser, emailToken);
-                    // gmail uygulma şifre fgywhklxwbwpusyg
+                    await smp.SendMailAsync(mail);                   
                     Microsoft.AspNetCore.Identity.SignInResult resultCheck = await signInManager.PasswordSignInAsync(appUser, user.Password, false, false);
                     return RedirectToAction("EmailVerification");//sonradan değiştiriliecek                    
                 }
