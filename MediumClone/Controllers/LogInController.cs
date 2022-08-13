@@ -22,6 +22,7 @@ namespace MediumClone.Controllers
             TempData["returnUrl"] = returnUrl;
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM login)
         {

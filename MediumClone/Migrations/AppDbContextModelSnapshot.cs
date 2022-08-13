@@ -190,6 +190,24 @@ namespace MediumClone.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "da783394-aff7-4be3-a1e5-52c310c2a27d",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "7d12c488-22a6-4de4-aef0-15564e98c466",
+                            Email = "ardasen.96@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "Developer",
+                            LastName = "Best",
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAEAACcQAAAAEExFHJ5JkVIsbrxfy7NtylSVvQ6V9wo3Zx+aHC1d0SgeVshpGdsNSMJTcohXsL3iGQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "35dcd39f-2a07-43e6-8b6a-fe5705978af7",
+                            TwoFactorEnabled = false,
+                            UserName = "Developer"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -217,6 +235,20 @@ namespace MediumClone.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "98219daa-8477-4721-8d4a-4f378bc8cef5",
+                            ConcurrencyStamp = "e3669b80-e2c6-492a-bbe5-7b8304f13c95",
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = "c5b19e3a-56e3-409a-a27f-d5f98abe69df",
+                            ConcurrencyStamp = "19659429-6ad6-4952-86c9-9066cbede025",
+                            Name = "User"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

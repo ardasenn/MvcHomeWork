@@ -18,5 +18,7 @@ namespace MediumClone.Models
         public IEnumerable<Article> InterestedArticles { get; set; }
         public int CategoryID { get; set; }
         public IEnumerable<Category> Categories { get; set; }
+
+        public bool IsAdmin { get; set; }
     }
 }

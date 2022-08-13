@@ -38,15 +38,20 @@ namespace MediumClone.Controllers
             this.imageRepository = imageRepository;
         }
         [AllowAnonymous]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            AppUser user = await userManager.GetUserAsync(HttpContext.User);
+            if( user is null)
+            {
             ArticlesForMainPageVM articlesForMainPageVM = new ArticlesForMainPageVM();
             articlesForMainPageVM.Articles = articleRepository.GetAllIncludeAuthors();            
              IEnumerable<Article> list= articleRepository.GetTrendingArticles(100);
             if (list != null) { articlesForMainPageVM.TopViewedArticles = list; }
             return View(articlesForMainPageVM);
+            }
+            return RedirectToAction("UserIndex",user);
         }
-        //[Authorize(Roles = "User,Admin")]
+        [Authorize(Roles = "User")]
         [HttpGet]
         public async Task<IActionResult> UserIndex(AppUser user)
         {               
@@ -54,7 +59,7 @@ namespace MediumClone.Controllers
             articlesForMainPageVM.Id = user.Id;
             articlesForMainPageVM.Articles = articleRepository.GetAllIncludeAuthors();
             articlesForMainPageVM.TopViewedArticles = articleRepository.GetTop10Articles();            
-            user.Categories = categoryRepository.GetCategoriesById(user.Id).ToList();
+            user.Categories = categoryRepository.GetCategoriesById(user.Id).ToList();            
             if (user.Categories != null && user.Categories.Count > 0)
             {
             List<int> categoryIdList = new List<int>();
@@ -160,7 +165,7 @@ namespace MediumClone.Controllers
             
             return RedirectToAction("UpdateArticle",id);
         }
-
+        
         public async Task<IActionResult> MyArticles()
         {
             AppUser appUser = await userManager.GetUserAsync(HttpContext.User);
@@ -206,15 +211,27 @@ namespace MediumClone.Controllers
             }
             return View(user);            
         }
+
+
+        
         public IActionResult ChangeImage()
         {              
             return View();
         }
+
+
         [HttpPost]
         public async Task<IActionResult> ChangeImage([Bind("ImageFile")] ImageVM image)
         {
             if(ModelState.IsValid)
             {
+                AppUser user= await userManager.GetUserAsync(HttpContext.User);
+                user.ProfileImage = imageRepository.GetImageByUserId(user.Id);
+                if(user.ProfileImage != null)
+                {
+                    ModelState.AddModelError("Photo", "You have allready photo. Please firstly delete your photo and than you can add :)");
+                    return View();
+                }
                 string wwwRoothPath = hostEnvironment.WebRootPath;
                 string fileName = Path.GetFileNameWithoutExtension(image.ImageFile.FileName);
                 string extension = Path.GetExtension(image.ImageFile.FileName);
@@ -227,7 +244,7 @@ namespace MediumClone.Controllers
                 ProfileImage profileImage = new ProfileImage();
                 profileImage.ImageFile = image.ImageFile;
                 profileImage.ImageName = image.ImageName;
-                profileImage.User = await userManager.GetUserAsync(HttpContext.User);
+                profileImage.User = user;
                 bool check= imageRepository.Add(profileImage);
                 if(check) return RedirectToAction("UserIndex");
                 else return View();
@@ -246,6 +263,29 @@ namespace MediumClone.Controllers
             if(check) return View("ChangeImage");
             ModelState.AddModelError("Profile Image","Somethings were wrong");
             return View("ChangeImage");
+        }
+        public async Task<IActionResult> EditUserPage(string id)
+        {
+            var user =await userManager.FindByIdAsync(id);
+            UserVM userVM = new UserVM();
+            userVM.UserName = user.UserName;
+            userVM.FirstName=user.FirstName;
+            userVM.LastName = user.LastName;
+            userVM.Description = user.UserDescription;
+            userVM.Email = user.Email;
+            return View(userVM);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditUserPage(UserVM userVM)
+        {
+            AppUser user = await userManager.FindByEmailAsync(userVM.Email);
+            user.FirstName=userVM.FirstName;
+            user.LastName=userVM.LastName;
+            user.UserDescription = userVM.Description;
+            user.UserName=userVM.UserName;
+            IdentityResult result=await userManager.UpdateAsync(user);
+            if (result.Succeeded) return RedirectToAction("Index"); 
+            else return View(userVM);
         }
 
         public IActionResult SearchPage()

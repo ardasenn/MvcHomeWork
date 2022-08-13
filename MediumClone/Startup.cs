@@ -36,22 +36,22 @@ namespace MediumClone
             services.AddDbContext<AppDbContext>(a => a.UseSqlServer(Configuration["ConnectionStrings:ConStr"]));
             services.AddIdentity<AppUser, IdentityRole>(options =>
             {                
-                options.SignIn.RequireConfirmedEmail = true ;
+                options.SignIn.RequireConfirmedEmail = false ;
             }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders().AddEntityFrameworkStores<AppDbContext>();//identity role þuan standart olarak ayaða kalkacak.Eðer deðiþtirmek istiyorsam kalýtým verdiðim sýnýfý yazmam gerekiyor.
             services.AddTransient(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IArticleRepository, ArticleRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IImageRepository, ImageRepository>();
-            services.AddSession();
-            //services.AddTransient<IEmailSender, EmailSender>();
+            
+            services.AddSession();            
             services.ConfigureApplicationCookie(option =>
             {
                 option.Cookie.Name = "Mycookie";
                 option.ExpireTimeSpan = TimeSpan.FromMinutes(120);
                 option.SlidingExpiration = true;
                 option.LoginPath = "/LogIn/Login";
-                option.AccessDeniedPath = "/Home/AccessDenied";
-
+                option.AccessDeniedPath = "/Home/AccessDenied";               
+                
             });
             
             services.AddControllersWithViews().AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>());
@@ -79,9 +79,11 @@ namespace MediumClone
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();//Identity için bunu ekledik
-            app.UseSession();            
+            app.UseAuthorization();
+
+            app.UseSession();    
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

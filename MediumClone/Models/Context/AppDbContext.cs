@@ -22,7 +22,9 @@ namespace MediumClone.Models.Context
             builder.Entity<AppUser>().HasMany(a=>a.Categories).WithMany(b=>b.AppUsers);
             builder.Entity<ProfileImage>().Ignore(a => a.ImageFile);
             builder.Entity<ProfileImage>().HasKey(a => a.ImageId);
-
+            builder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "Admin" });
+            builder.Entity<IdentityRole>().HasData(new IdentityRole { Name = "User" });
+            builder.Entity<AppUser>().HasData(new AppUser { Email = "ardasen.96@gmail.com", NormalizedEmail= "ARDASEN.96@GMAIL.COM", UserName = "Developer", NormalizedUserName="DEVELOPER", PasswordHash = "AQAAAAEAACcQAAAAEExFHJ5JkVIsbrxfy7NtylSVvQ6V9wo3Zx+aHC1d0SgeVshpGdsNSMJTcohXsL3iGQ==", FirstName = "Developer", LastName = "Best", EmailConfirmed = true });           
 
             base.OnModelCreating(builder);
         }
